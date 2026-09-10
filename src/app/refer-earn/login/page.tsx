@@ -123,13 +123,15 @@ export default function PromoterLoginPage() {
         </Link>
         <Link href="/" className="portal-back-btn">
           <ArrowLeft size={16} />
-          <span>Back to Website</span>
+          <span className="back-full-text">Back to Website</span>
+          <span className="back-short-text">Back</span>
         </Link>
       </header>
 
       <div className="admin-login-container">
-        <div className="admin-login-card">
-          {/* Left Illustration Panel */}
+        <div className="admin-login-card-wrapper">
+          <div className="admin-login-card">
+            {/* Left Illustration Panel */}
           <div
             className="admin-login-ill"
             style={{
@@ -261,7 +263,23 @@ export default function PromoterLoginPage() {
             )}
           </div>
         </div>
+
+        {/* Made in India Outside Card */}
+        <div className="portal-outer-made-in-india">
+          <span className="proudly-indian">Proudly Made in India</span>
+          <svg width="20" height="13.5" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style={{ borderRadius: '2px', objectFit: 'cover' }}>
+            <rect width="300" height="66.66" fill="#FF9933"/>
+            <rect y="66.66" width="300" height="66.66" fill="#FFFFFF"/>
+            <rect y="133.33" width="300" height="66.66" fill="#138808"/>
+            <circle cx="150" cy="100" r="24" fill="none" stroke="#000080" strokeWidth="4"/>
+            <line x1="150" y1="76" x2="150" y2="124" stroke="#000080" strokeWidth="2"/>
+            <line x1="126" y1="100" x2="174" y2="100" stroke="#000080" strokeWidth="2"/>
+            <line x1="133" y1="83" x2="167" y2="117" stroke="#000080" strokeWidth="2"/>
+            <line x1="167" y1="83" x2="133" y2="117" stroke="#000080" strokeWidth="2"/>
+          </svg>
+        </div>
       </div>
+    </div>
     </div>
   );
 }

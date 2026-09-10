@@ -1082,8 +1082,8 @@
   box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.08);
   width: 100%;
   max-width: 960px;
-  margin: 20px auto 60px auto;
-  padding: 44px 52px;
+  margin: 10px auto 14px auto;
+  padding: 36px 44px;
   position: relative;
   z-index: 1;
   transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1102,9 +1102,9 @@
 
 @media (max-width: 768px) {
   .business-register-card {
-    padding: 28px 18px;
+    padding: 24px 16px;
     border-radius: 20px;
-    margin: 10px auto 40px auto;
+    margin: 8px auto 12px auto;
     max-width: 100%;
   }
   .business-register-card.register-fullwidth {
@@ -1112,35 +1112,64 @@
   }
   .register-step2-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
   }
 }
 
-/* ---------- Proudly Made in India Badge ---------- */
-.portal-made-in-india {
+/* ---------- Proudly Made in India Badge (Outer, below card) ---------- */
+.admin-login-card-wrapper {
+  width: 100%;
+  max-width: 1060px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 auto;
+}
+
+.portal-outer-made-in-india {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 28px;
-  padding: 0;
-  font-family: 'Caveat', 'Dancing Script', cursive;
-  font-size: 14.5px;
-  font-weight: 600;
-  font-style: italic;
-  color: #94a3b8;
-  letter-spacing: 0.01em;
+  gap: 8px;
+  margin-top: 14px;
+  padding-left: 6px;
   user-select: none;
 }
 
-.portal-made-in-india svg {
-  flex-shrink: 0;
+.portal-outer-made-in-india .proudly-indian {
+  font-family: var(--font-cursive, 'Caveat', 'Dancing Script', cursive);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.01em;
 }
 
 @media (max-width: 768px) {
-  .portal-made-in-india {
-    margin-top: 20px;
-    font-size: 13px;
+  .portal-outer-made-in-india {
+    margin-top: 12px;
+    padding-left: 2px;
   }
+  .portal-outer-made-in-india .proudly-indian {
+    font-size: 1.25rem;
+  }
+}
+
+.admin-login-segment .rec-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+  letter-spacing: 0.02em;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.admin-login-segment.active .rec-tag {
+  background: #DCFCE7;
+  color: #15803D;
+  border-color: #86EFAC;
 }
 
 /* ---------- Registration Step Indicator ---------- */
