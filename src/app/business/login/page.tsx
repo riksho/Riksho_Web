@@ -171,7 +171,7 @@ export default function BusinessLogin() {
     if (userId) {
       const { data: biz } = await businessSupabase
         .from("businesses")
-        .select("id")
+        .select("id, status, name")
         .eq("owner_user_id", userId)
         .maybeSingle();
 
@@ -180,6 +180,13 @@ export default function BusinessLogin() {
         const param = tab === "email" ? `email=${encodeURIComponent(id)}` : `phone=${encodeURIComponent(id)}`;
         setLoading(false);
         router.push(`/business/register?${param}`);
+        return;
+      }
+
+      // If business registration is under review or rejected, route to pending page
+      if (biz.status === "pending" || biz.status === "rejected") {
+        setLoading(false);
+        router.push("/business/pending");
         return;
       }
     }

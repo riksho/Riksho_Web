@@ -476,24 +476,43 @@ function BusinessRegisterContent() {
       // If phone was already verified in Step 1, user already has an authenticated session!
       const { data: { session } } = await businessSupabase.auth.getSession();
       if (session?.user?.id) {
-        // Direct insert
-        const { error: insertError } = await businessSupabase
-          .from("businesses")
-          .insert({
-            owner_user_id: session.user.id,
-            name: formData.businessName.trim(),
-            gstin: taxDocType === "gstin" ? formData.gstin.toUpperCase().trim() : (formData.pan.toUpperCase().trim() || "PAN_REGISTERED"),
-            pan: formData.pan.toUpperCase().trim(),
-            address: formData.address.trim(),
-            city: formData.city.trim(),
-            contact_name: formData.contactName.trim(),
-            phone: formData.phone.trim(),
-            email: formData.email.trim().toLowerCase(),
-            status: "pending",
-          });
+        const userId = session.user.id;
+        const bizPayload = {
+          owner_user_id: userId,
+          name: formData.businessName.trim(),
+          gstin: taxDocType === "gstin" ? formData.gstin.toUpperCase().trim() : (formData.pan.toUpperCase().trim() || "PAN_REGISTERED"),
+          pan: formData.pan.toUpperCase().trim(),
+          address: formData.address.trim(),
+          city: formData.city.trim(),
+          contact_name: formData.contactName.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim().toLowerCase(),
+          status: "pending",
+        };
 
-        if (insertError) {
-          setError(insertError.message);
+        // Check if a business already exists for this owner
+        const { data: existingBiz } = await businessSupabase
+          .from("businesses")
+          .select("id")
+          .eq("owner_user_id", userId)
+          .maybeSingle();
+
+        let saveError = null;
+        if (existingBiz?.id) {
+          const { error } = await businessSupabase
+            .from("businesses")
+            .update(bizPayload)
+            .eq("id", existingBiz.id);
+          saveError = error;
+        } else {
+          const { error } = await businessSupabase
+            .from("businesses")
+            .insert(bizPayload);
+          saveError = error;
+        }
+
+        if (saveError) {
+          setError(saveError.message);
           setLoading(false);
           return;
         }
@@ -503,7 +522,7 @@ function BusinessRegisterContent() {
           localStorage.removeItem(DRAFT_KEY);
         } catch (e) {}
 
-        // Success — redirect to dashboard
+        // Success — redirect to pending application status
         router.push("/business/pending");
         return;
       }
@@ -548,26 +567,44 @@ function BusinessRegisterContent() {
         return;
       }
 
-      // Insert business record
+      // Insert or update business record
       const userId = data?.user?.id;
       if (userId) {
-        const { error: insertError } = await businessSupabase
-          .from("businesses")
-          .insert({
-            owner_user_id: userId,
-            name: formData.businessName.trim(),
-            gstin: taxDocType === "gstin" ? formData.gstin.toUpperCase().trim() : (formData.pan.toUpperCase().trim() || "PAN_REGISTERED"),
-            pan: formData.pan.toUpperCase().trim(),
-            address: formData.address.trim(),
-            city: formData.city.trim(),
-            contact_name: formData.contactName.trim(),
-            phone: formData.phone.trim(),
-            email: formData.email.trim().toLowerCase(),
-            status: "active",
-          });
+        const bizPayload = {
+          owner_user_id: userId,
+          name: formData.businessName.trim(),
+          gstin: taxDocType === "gstin" ? formData.gstin.toUpperCase().trim() : (formData.pan.toUpperCase().trim() || "PAN_REGISTERED"),
+          pan: formData.pan.toUpperCase().trim(),
+          address: formData.address.trim(),
+          city: formData.city.trim(),
+          contact_name: formData.contactName.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim().toLowerCase(),
+          status: "pending",
+        };
 
-        if (insertError) {
-          setError(insertError.message);
+        const { data: existingBiz } = await businessSupabase
+          .from("businesses")
+          .select("id")
+          .eq("owner_user_id", userId)
+          .maybeSingle();
+
+        let saveError = null;
+        if (existingBiz?.id) {
+          const { error } = await businessSupabase
+            .from("businesses")
+            .update(bizPayload)
+            .eq("id", existingBiz.id);
+          saveError = error;
+        } else {
+          const { error } = await businessSupabase
+            .from("businesses")
+            .insert(bizPayload);
+          saveError = error;
+        }
+
+        if (saveError) {
+          setError(saveError.message);
           setLoading(false);
           return;
         }
@@ -578,7 +615,7 @@ function BusinessRegisterContent() {
         localStorage.removeItem(DRAFT_KEY);
       } catch (e) {}
 
-      // Success — redirect to dashboard
+      // Success — redirect to pending application status
       router.push("/business/pending");
     } catch (err) {
       setError("Something went wrong. Please try again.");

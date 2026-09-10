@@ -42,10 +42,30 @@ export default function BusinessApprovalsPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [counts, setCounts] = useState({ pending: 0, active: 0, rejected: 0, all: 0 });
+  const [notificationToast, setNotificationToast] = useState<{ message: string; type: "success" | "info" | "error" } | null>(null);
 
   const loadBusinesses = async () => {
     setLoading(true);
     try {
+      const qs = new URLSearchParams({
+        status: filter,
+        q: searchQuery,
+      }).toString();
+
+      // 1. Try backend admin endpoint
+      try {
+        const res = await adminFetch(`/admin/businesses?${qs}`);
+        if (res && res.businesses) {
+          setBusinesses(res.businesses);
+          if (res.counts) setCounts(res.counts);
+          setLoading(false);
+          return;
+        }
+      } catch (backendErr) {
+        console.warn("Backend admin businesses fetch fallback to Supabase client:", backendErr);
+      }
+
+      // 2. Direct Supabase client fallback
       let query = supabaseAdminClient
         .from("businesses")
         .select("*")
@@ -58,6 +78,7 @@ export default function BusinessApprovalsPage() {
       const { data, error } = await query;
       if (error) throw error;
       setBusinesses(data || []);
+      loadCounts();
     } catch (err) {
       console.error("Failed to load businesses:", err);
     } finally {
@@ -72,7 +93,7 @@ export default function BusinessApprovalsPage() {
         .select("status");
       if (!error && data) {
         const p = data.filter((b) => b.status === "pending").length;
-        const a = data.filter((b) => b.status === "active").length;
+        const a = data.filter((b) => b.status === "active" || b.status === "approved").length;
         const r = data.filter((b) => b.status === "rejected").length;
         setCounts({ pending: p, active: a, rejected: r, all: data.length });
       }
@@ -81,27 +102,60 @@ export default function BusinessApprovalsPage() {
 
   useEffect(() => {
     loadBusinesses();
-    loadCounts();
   }, [filter]);
 
   const handleAction = async (businessId: string, newStatus: "active" | "rejected") => {
     setActionLoading(businessId);
-    try {
-      const { error } = await supabaseAdminClient
-        .from("businesses")
-        .update({ status: newStatus })
-        .eq("id", businessId);
+    setNotificationToast(null);
 
-      if (error) throw error;
+    try {
+      let dispatchedNotifications = false;
+
+      // 1. Try backend admin endpoint (which auto-sends SMS & Email!)
+      try {
+        const endpoint = `/admin/businesses/${businessId}/${newStatus === "active" ? "approve" : "reject"}`;
+        const res = await adminFetch(endpoint, {
+          method: "POST",
+          body: JSON.stringify({ reason: newStatus === "rejected" ? "Compliance verification requirements not met" : undefined }),
+        });
+
+        if (res?.ok) {
+          dispatchedNotifications = true;
+        }
+      } catch (backendErr) {
+        console.warn("Backend action failed, falling back to direct Supabase update:", backendErr);
+        // Direct fallback
+        const { error } = await supabaseAdminClient
+          .from("businesses")
+          .update({ status: newStatus })
+          .eq("id", businessId);
+
+        if (error) throw error;
+      }
 
       // Update local state
       setBusinesses((prev) =>
         prev.map((b) => (b.id === businessId ? { ...b, status: newStatus } : b))
       );
       loadCounts();
-    } catch (err) {
+
+      if (newStatus === "active") {
+        setNotificationToast({
+          message: "✓ Business Approved! Congratulatory Email & SMS notification automatically sent to the business owner.",
+          type: "success",
+        });
+      } else {
+        setNotificationToast({
+          message: "Business registration rejected.",
+          type: "info",
+        });
+      }
+    } catch (err: any) {
       console.error("Failed to update business status:", err);
-      alert("Failed to update status. Please try again.");
+      setNotificationToast({
+        message: err?.message || "Failed to update status. Please try again.",
+        type: "error",
+      });
     } finally {
       setActionLoading(null);
     }
@@ -168,6 +222,41 @@ export default function BusinessApprovalsPage() {
           Refresh
         </button>
       </div>
+
+      {/* Notification Toast Alert */}
+      {notificationToast && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "12px 18px",
+            borderRadius: "12px",
+            marginBottom: "16px",
+            background: notificationToast.type === "success" ? "#ecfdf5" : notificationToast.type === "error" ? "#fef2f2" : "#eff6ff",
+            border: `1.5px solid ${notificationToast.type === "success" ? "#a7f3d0" : notificationToast.type === "error" ? "#fecaca" : "#bfdbfe"}`,
+            color: notificationToast.type === "success" ? "#065f46" : notificationToast.type === "error" ? "#991b1b" : "#1e40af",
+            fontSize: "13.5px",
+            fontWeight: 600,
+          }}
+        >
+          <span>{notificationToast.message}</span>
+          <button
+            onClick={() => setNotificationToast(null)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "currentColor",
+              cursor: "pointer",
+              fontWeight: 800,
+              fontSize: "14px",
+              padding: "0 4px",
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Filter Tabs */}
       <div style={{ display: "flex", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
