@@ -19,6 +19,7 @@ import {
   Coins,
   Menu,
   X,
+  Building2,
 } from "lucide-react";
 import "@/styles/portal.css";
 
@@ -111,6 +112,9 @@ export default function AdminLayout({
     ]},
     { section: "Analytics", items: [
       { href: "/admin/cancellations", label: "Feedback Cancellation", icon: MessageSquareX },
+    ]},
+    { section: "Business", items: [
+      { href: "/admin/businesses", label: "Business Approvals", icon: Building2 },
     ]},
   ];
 
