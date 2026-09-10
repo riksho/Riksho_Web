@@ -2113,3 +2113,196 @@
   }
 }
 
+
+/* ---------- Full-width Register Card (no illustration) ---------- */
+.business-register-card.register-fullwidth {
+  max-width: 720px;
+}
+
+.admin-login-card.register-fullwidth .admin-login-form-area {
+  padding: 48px 56px;
+}
+
+@media (max-width: 768px) {
+  .admin-login-card.register-fullwidth .admin-login-form-area {
+    padding: 32px 20px;
+  }
+}
+
+/* 2-col grid for register fields */
+.register-fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+
+@media (max-width: 600px) {
+  .register-fields-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.register-fields-row .admin-field-group {
+  margin-bottom: 0;
+}
+
+/* ---------- Pending Approval Page ---------- */
+.pending-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-bg, #F8F9FB);
+  padding: 40px 24px;
+}
+
+.pending-card {
+  background: #ffffff;
+  border-radius: 28px;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.08);
+  max-width: 540px;
+  width: 100%;
+  padding: 56px 48px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .pending-card {
+    padding: 40px 24px;
+    border-radius: 20px;
+  }
+}
+
+.pending-icon-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #EEF0FE 0%, #E8E6FF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px;
+}
+
+.pending-title {
+  font-family: var(--font-display, sans-serif);
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.pending-subtitle {
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.pending-details {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 20px 24px;
+  text-align: left;
+  margin-bottom: 32px;
+  border: 1px solid #e2e8f0;
+}
+
+.pending-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.pending-detail-row:not(:last-child) {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pending-detail-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pending-detail-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pending-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  color: #C2410C;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pending-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F97316;
+  animation: pendingPulse 2s ease-in-out infinite;
+}
+
+@keyframes pendingPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.pending-btn-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.pending-btn-home:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.pending-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: #64748b;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  margin-top: 12px;
+}
+
+.pending-btn-secondary:hover {
+  border-color: #cbd5e1;
+  color: #0f172a;
+}

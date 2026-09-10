@@ -489,7 +489,7 @@ function BusinessRegisterContent() {
             contact_name: formData.contactName.trim(),
             phone: formData.phone.trim(),
             email: formData.email.trim().toLowerCase(),
-            status: "active",
+            status: "pending",
           });
 
         if (insertError) {
@@ -504,7 +504,7 @@ function BusinessRegisterContent() {
         } catch (e) {}
 
         // Success — redirect to dashboard
-        router.push("/business/dashboard");
+        router.push("/business/pending");
         return;
       }
 
@@ -579,7 +579,7 @@ function BusinessRegisterContent() {
       } catch (e) {}
 
       // Success — redirect to dashboard
-      router.push("/business/dashboard");
+      router.push("/business/pending");
     } catch (err) {
       setError("Something went wrong. Please try again.");
     }
@@ -601,7 +601,7 @@ function BusinessRegisterContent() {
       </header>
 
       <div className="admin-login-container" style={{ padding: "10px 20px 60px" }}>
-        <div className="business-register-card">
+        <div className="business-register-card register-fullwidth">
           {/* OTP Verification Step */}
             {otpStep ? (
               <>

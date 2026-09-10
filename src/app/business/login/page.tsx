@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function BusinessLogin() {
   const router = useRouter();
   const [step, setStep] = useState<"input" | "code">("input");
-  const [tab, setTab] = useState<"phone" | "email">("email");
+  const [tab, setTab] = useState<"phone" | "email">("phone");
   const [loginId, setLoginId] = useState("");
   const [code, setCode] = useState("");
   const [otpArray, setOtpArray] = useState(["", "", "", "", "", ""]);
@@ -230,16 +230,16 @@ export default function BusinessLogin() {
                 {/* Segmented Tab Switcher */}
                 <div className="admin-login-segmented">
                   <div 
-                    className={`admin-login-segment ${tab === 'email' ? 'active' : ''}`}
-                    onClick={() => { setTab('email'); setLoginId(""); setInputError(""); setError(""); }}
-                  >
-                    <Mail size={16} /> Work Email
-                  </div>
-                  <div 
                     className={`admin-login-segment ${tab === 'phone' ? 'active' : ''}`}
                     onClick={() => { setTab('phone'); setLoginId(""); setInputError(""); setError(""); }}
                   >
                     <Phone size={16} /> Mobile Phone
+                  </div>
+                  <div 
+                    className={`admin-login-segment ${tab === 'email' ? 'active' : ''}`}
+                    onClick={() => { setTab('email'); setLoginId(""); setInputError(""); setError(""); }}
+                  >
+                    <Mail size={16} /> Work Email
                   </div>
                 </div>
 

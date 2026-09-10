@@ -19,7 +19,7 @@ export default function BusinessLayout({
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    if (pathname === "/business" || pathname === "/business/login" || pathname === "/business/register") {
+    if (pathname === "/business" || pathname === "/business/login" || pathname === "/business/register" || pathname === "/business/pending") {
       setLoading(false);
       return;
     }
@@ -43,7 +43,13 @@ export default function BusinessLayout({
         }
 
         if (!me?.business && role !== "admin") {
-          router.push("/business/register");
+          // Check if they have a pending business
+          const pendingBiz = me?.business_status;
+          if (pendingBiz === "pending") {
+            router.push("/business/pending");
+          } else {
+            router.push("/business/register");
+          }
           setLoading(false);
           return;
         }
@@ -66,7 +72,7 @@ export default function BusinessLayout({
   };
 
   // Public landing and login page do not get the admin sidebar shell
-  if (pathname === "/business" || pathname === "/business/login" || pathname === "/business/register") {
+  if (pathname === "/business" || pathname === "/business/login" || pathname === "/business/register" || pathname === "/business/pending") {
     return <>{children}</>;
   }
 
