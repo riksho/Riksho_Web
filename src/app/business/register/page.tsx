@@ -1159,7 +1159,18 @@ function BusinessRegisterContent() {
                     </div>
 
                     <div className="register-terms-notice">
-                      By submitting this registration, you agree to Riksho’s Enterprise Terms of Service and Privacy Policy.
+                      <ShieldCheck size={16} className="terms-icon" />
+                      <span>
+                        By submitting this registration, you agree to Riksho’s{" "}
+                        <Link href="/terms" target="_blank" className="terms-link">
+                          Enterprise Terms of Service
+                        </Link>{" "}
+                        and{" "}
+                        <Link href="/privacy" target="_blank" className="terms-link">
+                          Privacy Policy
+                        </Link>
+                        .
+                      </span>
                     </div>
                   </div>
                 )}
