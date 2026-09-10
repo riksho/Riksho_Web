@@ -123,7 +123,8 @@ export default function AdminLogin() {
         </Link>
         <Link href="/" className="portal-back-btn">
           <ArrowLeft size={16} />
-          <span>Back to Website</span>
+          <span className="back-full-text">Back to Website</span>
+          <span className="back-short-text">Back</span>
         </Link>
       </header>
 
@@ -254,6 +255,16 @@ export default function AdminLogin() {
                 </button>
               </form>
             )}
+            {/* Made in India */}
+            <div className="portal-made-in-india">
+              <span>Proudly Made in India</span>
+              <svg width="18" height="12" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style={{ borderRadius: '2px' }}>
+                <rect width="300" height="66.66" fill="#FF9933"/>
+                <rect y="66.66" width="300" height="66.66" fill="#FFFFFF"/>
+                <rect y="133.33" width="300" height="66.66" fill="#138808"/>
+                <circle cx="150" cy="100" r="20" fill="none" stroke="#000080" strokeWidth="3"/>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
