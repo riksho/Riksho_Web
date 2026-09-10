@@ -2268,66 +2268,73 @@
 
 /* ---------- Pending Approval Page ---------- */
 .pending-page-wrapper {
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--admin-bg, #F8F9FB);
-  padding: 40px 24px;
+  background: transparent;
+  padding: 24px 20px 48px;
+  position: relative;
+  z-index: 1;
 }
 
 .pending-card {
   background: #ffffff;
   border-radius: 28px;
-  border: 1.5px solid #e2e8f0;
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.08);
-  max-width: 540px;
+  border: 1.5px solid #0f172a;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12);
+  max-width: 520px;
   width: 100%;
-  padding: 56px 48px;
+  padding: 44px 40px;
   text-align: center;
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
 }
 
 @media (max-width: 600px) {
   .pending-card {
-    padding: 40px 24px;
+    padding: 32px 20px;
     border-radius: 20px;
   }
 }
 
 .pending-icon-ring {
-  width: 80px;
-  height: 80px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #EEF0FE 0%, #E8E6FF 100%);
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: #eef2ff;
+  border: 1.5px solid #e0e7ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 28px;
+  margin: 0 auto 20px;
+  color: #4338ca;
 }
 
 .pending-title {
   font-family: var(--font-display, sans-serif);
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.02em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .pending-subtitle {
   color: #64748b;
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 32px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  margin-bottom: 26px;
 }
 
 .pending-details {
   background: #f8fafc;
   border-radius: 16px;
-  padding: 20px 24px;
+  padding: 16px 20px;
   text-align: left;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   border: 1px solid #e2e8f0;
 }
 
@@ -2335,16 +2342,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 9px 0;
 }
 
 .pending-detail-row:not(:last-child) {
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #edf2f7;
 }
 
 .pending-detail-label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 700;
   color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -2360,12 +2367,12 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: 999px;
-  background: #FFF7ED;
-  border: 1px solid #FED7AA;
-  color: #C2410C;
-  font-size: 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+  font-size: 11.5px;
   font-weight: 700;
 }
 
@@ -2373,7 +2380,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #F97316;
+  background: #f97316;
   animation: pendingPulse 2s ease-in-out infinite;
 }
 
@@ -2382,26 +2389,38 @@
   50% { opacity: 0.4; }
 }
 
+.pending-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
 .pending-btn-home {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 28px;
-  background: #0f172a;
+  width: 100%;
+  height: 44px;
+  padding: 0 24px;
+  background: #4338ca;
   color: #ffffff;
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
+  box-shadow: 0 4px 14px rgba(67, 56, 202, 0.25);
 }
 
 .pending-btn-home:hover {
-  background: #1e293b;
+  background: #3730a3;
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(67, 56, 202, 0.35);
+  color: #ffffff;
 }
 
 .pending-btn-secondary {
@@ -2409,20 +2428,22 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 24px;
-  background: transparent;
-  color: #64748b;
+  width: 100%;
+  height: 42px;
+  padding: 0 20px;
+  background: #ffffff;
+  color: #475569;
   border: 1.5px solid #e2e8f0;
-  border-radius: 14px;
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
   text-decoration: none;
-  margin-top: 12px;
 }
 
 .pending-btn-secondary:hover {
   border-color: #cbd5e1;
   color: #0f172a;
+  background: #f8fafc;
 }

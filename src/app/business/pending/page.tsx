@@ -86,13 +86,18 @@ export default function BusinessPendingPage() {
           <img src="/images/final_riksho.png" alt="Riksho" className="portal-top-logo" />
           <span className="portal-type-badge">Enterprise Portal</span>
         </Link>
+        <Link href="/business" className="portal-back-btn">
+          <ArrowLeft size={16} />
+          <span className="back-full-text">Back to Business</span>
+          <span className="back-short-text">Back</span>
+        </Link>
       </header>
 
-      <div className="pending-page-wrapper" style={{ paddingTop: "20px" }}>
+      <div className="pending-page-wrapper">
         <div className="pending-card">
           {/* Icon */}
           <div className="pending-icon-ring">
-            <Clock size={36} color="#4338CA" strokeWidth={2} />
+            <Clock size={34} color="#4338CA" strokeWidth={2.2} />
           </div>
 
           {/* Title */}
@@ -134,15 +139,16 @@ export default function BusinessPendingPage() {
           )}
 
           {/* Actions */}
-          <Link href="/" className="pending-btn-home">
-            <Home size={16} />
-            Back to Riksho Home
-          </Link>
-          <br />
-          <Link href="/business" className="pending-btn-secondary">
-            <ArrowLeft size={14} />
-            Business Landing Page
-          </Link>
+          <div className="pending-actions">
+            <Link href="/" className="pending-btn-home">
+              <Home size={16} />
+              <span>Back to Riksho Home</span>
+            </Link>
+            <Link href="/business" className="pending-btn-secondary">
+              <ArrowLeft size={14} />
+              <span>Business Landing Page</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
