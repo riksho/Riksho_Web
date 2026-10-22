@@ -1,6 +1,6 @@
 import { supabaseAdminClient } from "./supabaseAdminClient";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://riksho-backend.onrender.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://riksho-backend-htdg.onrender.com";
 
 export async function adminFetch(endpoint: string, options: RequestInit = {}) {
   // Get current session token

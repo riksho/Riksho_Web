@@ -5,7 +5,7 @@ import {
   promoterSupabase,
 } from "./supabaseAdminClient";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://riksho-backend.onrender.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://riksho-backend-htdg.onrender.com";
 
 /**
  * Resolves the appropriate isolated Supabase client based on the active browser path
