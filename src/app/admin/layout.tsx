@@ -20,6 +20,8 @@ import {
   Menu,
   X,
   Building2,
+  Store,
+  UserCheck,
 } from "lucide-react";
 import "@/styles/portal.css";
 
@@ -115,6 +117,10 @@ export default function AdminLayout({
     ]},
     { section: "Business", items: [
       { href: "/admin/businesses", label: "Business Approvals", icon: Building2 },
+    ]},
+    { section: "DusMint Quick Commerce", items: [
+      { href: "/admin/dusmint/partners", label: "Active Partners", icon: Store },
+      { href: "/admin/dusmint/leads", label: "Partner Leads (Drop-offs)", icon: UserMinus },
     ]},
   ];
 

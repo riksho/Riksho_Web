@@ -45,7 +45,9 @@ export default function PushNotificationsPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [target, setTarget] = useState<"all_users" | "riders" | "drivers">("all_users");
+  const [target, setTarget] = useState<
+    "all_users" | "riders" | "drivers" | "dusmint_all" | "dusmint_partners" | "dusmint_customers" | "dusmint_leads"
+  >("all_users");
 
   // Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -54,7 +56,7 @@ export default function PushNotificationsPage() {
     title: string;
     body: string;
     imageUrl?: string;
-    target: "all_users" | "riders" | "drivers";
+    target: "all_users" | "riders" | "drivers" | "dusmint_all" | "dusmint_partners" | "dusmint_customers" | "dusmint_leads";
   } | null>(null);
 
   const fetchHistory = async (page = currentPage) => {
@@ -103,12 +105,23 @@ export default function PushNotificationsPage() {
     setModalOpen(true);
   };
 
-  const openQuickTestModal = (quickTarget: "all_users" | "riders" | "drivers") => {
+  const openQuickTestModal = (
+    quickTarget: "all_users" | "riders" | "drivers" | "dusmint_all" | "dusmint_partners" | "dusmint_customers" | "dusmint_leads"
+  ) => {
     const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    const targetLabel = quickTarget === "all_users" ? "All Users" : quickTarget === "riders" ? "Riders" : "Drivers";
+    const targetLabelMap: Record<string, string> = {
+      all_users: "All Riksho Users",
+      riders: "Riksho Riders",
+      drivers: "Riksho Drivers",
+      dusmint_all: "DusMint All",
+      dusmint_partners: "DusMint Partners",
+      dusmint_customers: "DusMint Customers",
+      dusmint_leads: "DusMint Leads",
+    };
+    const targetLabel = targetLabelMap[quickTarget] || quickTarget;
 
     setPendingPayload({
-      title: `🧪 Riksho Test Alert (${targetLabel})`,
+      title: `🧪 ${quickTarget.startsWith("dusmint") ? "DusMint" : "Riksho"} Test Alert (${targetLabel})`,
       body: `Test broadcast dispatched to ${targetLabel.toLowerCase()} at ${timestamp}. Push pipeline is active!`,
       imageUrl: undefined,
       target: quickTarget,
@@ -194,6 +207,14 @@ export default function PushNotificationsPage() {
         return { label: "Drivers Only", bg: "#ECFDF5", color: "#059669", border: "#A7F3D0" };
       case "riders":
         return { label: "Riders Only", bg: "#EEF2FF", color: "#4338CA", border: "#C7D2FE" };
+      case "dusmint_partners":
+        return { label: "DusMint Partners", bg: "#E8F5EC", color: "#047A36", border: "#BBF7D0" };
+      case "dusmint_customers":
+        return { label: "DusMint Customers", bg: "#F0FDF4", color: "#16A34A", border: "#86EFAC" };
+      case "dusmint_leads":
+        return { label: "DusMint Leads (Drop-offs)", bg: "#FEF3C7", color: "#B45309", border: "#FDE68A" };
+      case "dusmint_all":
+        return { label: "DusMint (All)", bg: "#ECFDF5", color: "#065F46", border: "#6EE7B7" };
       default:
         return { label: "All Users", bg: "#F5F3FF", color: "#7C3AED", border: "#DDD6FE" };
     }
@@ -276,6 +297,46 @@ export default function PushNotificationsPage() {
           >
             <FlaskConical size={14} /> Test Both
           </button>
+
+          <button
+            onClick={() => openQuickTestModal("dusmint_partners")}
+            style={{
+              padding: "8px 14px",
+              backgroundColor: "#E8F5EC",
+              color: "#047A36",
+              border: "1px solid #BBF7D0",
+              borderRadius: "8px",
+              fontSize: "13px",
+              fontWeight: "600",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              transition: "all 0.15s ease",
+            }}
+          >
+            <FlaskConical size={14} /> Test DusMint Partner
+          </button>
+
+          <button
+            onClick={() => openQuickTestModal("dusmint_customers")}
+            style={{
+              padding: "8px 14px",
+              backgroundColor: "#F0FDF4",
+              color: "#16A34A",
+              border: "1px solid #86EFAC",
+              borderRadius: "8px",
+              fontSize: "13px",
+              fontWeight: "600",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              transition: "all 0.15s ease",
+            }}
+          >
+            <FlaskConical size={14} /> Test DusMint Customer
+          </button>
         </div>
       </div>
 
@@ -349,9 +410,17 @@ export default function PushNotificationsPage() {
                   fontWeight: "500",
                 }}
               >
-                <option value="all_users">All Users (Riders + Drivers)</option>
-                <option value="riders">Riders Only (Customer App)</option>
-                <option value="drivers">Drivers Only (Riksho Buddy)</option>
+                <optgroup label="Riksho Mobility">
+                  <option value="all_users">All Riksho Users (Riders + Drivers)</option>
+                  <option value="riders">Riksho Riders Only (Customer App)</option>
+                  <option value="drivers">Riksho Drivers Only (Riksho Buddy)</option>
+                </optgroup>
+                <optgroup label="DusMint Quick Commerce">
+                  <option value="dusmint_all">DusMint (All Customers & Partners)</option>
+                  <option value="dusmint_partners">DusMint Active Partners / Vendors</option>
+                  <option value="dusmint_customers">DusMint Customers Only</option>
+                  <option value="dusmint_leads">DusMint Partner Leads (Drop-offs / Funnel)</option>
+                </optgroup>
               </select>
             </div>
 
