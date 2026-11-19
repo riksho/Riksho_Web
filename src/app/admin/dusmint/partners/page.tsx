@@ -50,7 +50,27 @@ export default function DusmintPartnersPage() {
       if (statusFilter !== "all") params.append("status", statusFilter);
 
       const data = await adminFetch(`/admin/dusmint/partners?${params.toString()}`);
-      setPartners(Array.isArray(data) ? data : []);
+      const rawList = Array.isArray(data) ? data : [];
+      const normalized: DusmintPartner[] = rawList.map((p: any) => ({
+        id: p.id,
+        authUserId: p.authUserId || p.auth_user_id || null,
+        name: p.name || "",
+        ownerName: p.ownerName || p.owner_name || "Partner",
+        ownerPhone: p.ownerPhone || p.owner_phone || "",
+        category: p.category || "groceries",
+        address: p.address || (p.clusters ? `${p.clusters.name}, ${p.clusters.city}` : "Patna"),
+        clusterName: p.clusterName || p.clusters?.name || "Central Mandi",
+        city: p.city || p.clusters?.city || "Patna",
+        lat: p.lat ?? null,
+        lng: p.lng ?? null,
+        isOpen: p.isOpen ?? p.is_open ?? false,
+        score: p.score ?? 0,
+        status: p.status || "pending",
+        payoutVpa: p.payoutVpa || p.bank_or_upi || null,
+        shopPhotos: p.shopPhotos || p.shop_photo_urls || [],
+        createdAt: p.createdAt || p.created_at || "",
+      }));
+      setPartners(normalized);
     } catch (err) {
       console.error("Failed to load DusMint partners:", err);
     } finally {
@@ -328,7 +348,7 @@ export default function DusmintPartnersPage() {
                             <Phone size={12} /> {p.ownerPhone}
                           </a>
                           <a
-                            href={`https://wa.me/${p.ownerPhone.replace(/\D/g, "")}`}
+                            href={`https://wa.me/${(p.ownerPhone || "").replace(/\D/g, "")}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{

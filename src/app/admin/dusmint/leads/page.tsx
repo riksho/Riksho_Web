@@ -327,7 +327,7 @@ export default function DusmintLeadsPage() {
                   </tr>
                 ) : (
                   filteredLeads.map((lead) => {
-                    const cleanPhone = lead.phone.replace(/\D/g, "");
+                    const cleanPhone = (lead.phone || "").replace(/\D/g, "");
                     const waMessage = encodeURIComponent(
                       lead.stage === "otp_verified"
                         ? "Namaste! We noticed you verified your number on DusMint Partner app. Complete your shop details in just 2 minutes to start receiving daily mandi orders directly to your shop!"
